@@ -17,4 +17,13 @@ export class DeviceService {
       throw error;
     }
   }
+
+  async findAll(): Promise<Device[]> {
+    try {
+      const devices: Device[] = await this.repository.findAll();
+      return devices;
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { DeviceModule } from './modules/device/device.module';
 
 @Module({

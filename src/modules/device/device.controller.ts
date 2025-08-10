@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { Device } from './schemas/device.schema';
 import { DeviceService } from './device.service';
@@ -12,5 +12,10 @@ export class DeviceController {
   @Post()
   async create(@Body() body: DeviceCreateDto): Promise<Device> {
     return await this.service.create(body);
+  }
+
+  @Get()
+  async findAll(): Promise<Device[]> {
+    return await this.service.findAll();
   }
 }

@@ -15,4 +15,8 @@ export class DeviceRepository implements DeviceRepositoryInterface {
     const createdDevice = await this.deviceModel.create(body);
     return createdDevice;
   }
+
+  async findAll(): Promise<Device[]> {
+    return await this.deviceModel.find();
+  }
 }
