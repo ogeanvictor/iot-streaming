@@ -11,7 +11,7 @@ export class Device {
   @Prop()
   location: string;
 
-  @Prop({ type: String, enum: Object.values(DeviceType) })
+  @Prop({ type: String, enum: Object.values(DeviceType), required: true })
   type: DeviceType;
 
   @Prop({ default: now })

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -6,6 +7,7 @@ import { DeviceRepositoryInterface } from './interfaces/device.repository.interf
 
 import { DeviceCreateDto } from './dtos/device-create.dto';
 
+@Injectable()
 export class DeviceRepository implements DeviceRepositoryInterface {
   constructor(@InjectModel(Device.name) private deviceModel: Model<Device>) {}
 
