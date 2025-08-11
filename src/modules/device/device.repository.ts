@@ -7,9 +7,7 @@ import { DeviceRepositoryInterface } from './interfaces/device.repository.interf
 import { DeviceCreateDto } from './dtos/device-create.dto';
 
 export class DeviceRepository implements DeviceRepositoryInterface {
-  constructor(
-    @InjectModel(Device.name) private readonly deviceModel: Model<Device>,
-  ) {}
+  constructor(@InjectModel(Device.name) private deviceModel: Model<Device>) {}
 
   async create(body: DeviceCreateDto): Promise<Device> {
     const createdDevice = await this.deviceModel.create(body);
