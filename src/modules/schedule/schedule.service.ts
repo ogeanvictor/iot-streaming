@@ -17,17 +17,19 @@ export class ScheduleService {
     const devices = await this.deviceModel.find();
 
     for (const dev of devices) {
+      console.log(dev);
       const dataPoint = new this.dataPointModel({
         device: dev._id,
         type: dev.type,
         value: +(Math.random() * 40).toFixed(2),
       });
 
+      console.log(dataPoint);
       await dataPoint.save();
     }
   }
 
-  @Cron('*/120 * * * * *')
+  @Cron('*/10 * * * * *')
   async handleCron() {
     await this.simulateData();
   }

@@ -8,6 +8,7 @@ import {
 } from '../dataPoint/schemas/dataPoint.schema';
 
 import { ScheduleService } from './schedule.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { ScheduleService } from './schedule.service';
     MongooseModule.forFeature([
       { name: DataPoint.name, schema: DataPointSchema },
     ]),
+    ScheduleModule.forRoot(),
   ],
   providers: [ScheduleService],
 })
-export class ScheduleModule {}
+export class ScheduleDataPointModule {}
