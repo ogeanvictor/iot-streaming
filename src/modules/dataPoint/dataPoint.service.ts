@@ -17,4 +17,12 @@ export class DataPointService {
       throw error;
     }
   }
+
+  async find(): Promise<DataPoint[]> {
+    try {
+      return await this.repository.find();
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

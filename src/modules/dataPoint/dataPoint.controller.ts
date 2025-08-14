@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { DataPoint } from './schemas/dataPoint.schema';
 import { DataPointService } from './dataPoint.service';
@@ -12,5 +12,10 @@ export class DataPointController {
   @Post()
   async create(@Body() body: DataPointCreateDto): Promise<DataPoint> {
     return await this.service.create(body);
+  }
+
+  @Get()
+  async find(): Promise<DataPoint[]> {
+    return await this.service.find();
   }
 }

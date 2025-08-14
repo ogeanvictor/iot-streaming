@@ -17,4 +17,8 @@ export class DataPointRepository implements DataPointRepositoryInterface {
     const createdDataPoint = await this.dataPointModel.create(body);
     return createdDataPoint;
   }
+
+  async find(): Promise<DataPoint[]> {
+    return await this.dataPointModel.find();
+  }
 }
