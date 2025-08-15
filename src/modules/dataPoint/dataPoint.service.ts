@@ -28,7 +28,19 @@ export class DataPointService {
 
   async findLastsByDevices(): Promise<DataPoint[]> {
     try {
-      return this.repository.findLastsByDevices();
+      return await this.repository.findLastsByDevices();
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async findByPeriodAndDevice(
+    from: string,
+    to: string,
+    deviceId: string,
+  ): Promise<DataPoint[]> {
+    try {
+      return await this.repository.findByPeriodAndDevice(from, to, deviceId);
     } catch (error: any) {
       throw error;
     }

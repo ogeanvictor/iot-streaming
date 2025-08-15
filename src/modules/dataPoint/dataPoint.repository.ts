@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 import { DataPoint } from './schemas/dataPoint.schema';
 import { DataPointRepositoryInterface } from './interfaces/dataPoint.repository.interface';
@@ -51,6 +51,21 @@ export class DataPointRepository implements DataPointRepositoryInterface {
           deviceType: '$device.type',
           latestValue: 1,
           latestTimestamp: 1,
+        },
+      },
+    ]);
+  }
+
+  async findByPeriodAndDevice(
+    from: string,
+    to: string,
+    deviceId: string,
+  ): Promise<DataPoint[]> {
+    return await this.dataPointModel.aggregate([
+      {
+        $match: {
+          device: new mongoose.Types.ObjectId(deviceId),
+          createdAt: { $gte: new Date(from), $lte: new Date(to) },
         },
       },
     ]);

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
 import { DataPoint } from './schemas/dataPoint.schema';
 import { DataPointService } from './dataPoint.service';
@@ -22,5 +22,14 @@ export class DataPointController {
   @Get('latest-by-devices')
   async findLatestsByDevices(): Promise<DataPoint[]> {
     return await this.service.findLastsByDevices();
+  }
+
+  @Get('period-and-device/:id')
+  async findByPeriodAndDevice(
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Param('id') deviceId: string,
+  ): Promise<DataPoint[]> {
+    return await this.service.findByPeriodAndDevice(from, to, deviceId);
   }
 }
