@@ -21,4 +21,38 @@ export class DataPointRepository implements DataPointRepositoryInterface {
   async find(): Promise<DataPoint[]> {
     return await this.dataPointModel.find();
   }
+
+  async findLastsByDevices(): Promise<DataPoint[]> {
+    return await this.dataPointModel.aggregate([
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $group: {
+          _id: '$device',
+          latestValue: { $first: '$value' },
+          latestTimestamp: { $first: '$createdAt' },
+        },
+      },
+      {
+        $lookup: {
+          from: 'devices',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'device',
+        },
+      },
+      { $unwind: '$device' },
+      {
+        $project: {
+          _id: 0,
+          deviceId: '$_id',
+          deviceName: '$device.name',
+          deviceType: '$device.type',
+          latestValue: 1,
+          latestTimestamp: 1,
+        },
+      },
+    ]);
+  }
 }

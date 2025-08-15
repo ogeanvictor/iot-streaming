@@ -25,4 +25,12 @@ export class DataPointService {
       throw error;
     }
   }
+
+  async findLastsByDevices(): Promise<DataPoint[]> {
+    try {
+      return this.repository.findLastsByDevices();
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

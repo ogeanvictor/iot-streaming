@@ -18,4 +18,9 @@ export class DataPointController {
   async find(): Promise<DataPoint[]> {
     return await this.service.find();
   }
+
+  @Get('latest-by-devices')
+  async findLatestsByDevices(): Promise<DataPoint[]> {
+    return await this.service.findLastsByDevices();
+  }
 }
