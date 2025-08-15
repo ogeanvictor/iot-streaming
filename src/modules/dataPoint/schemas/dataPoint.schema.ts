@@ -19,3 +19,4 @@ export class DataPoint {
   createdAt: Date;
 }
 export const DataPointSchema = SchemaFactory.createForClass(DataPoint);
+DataPointSchema.index({ deviceId: 1, createdAt: -1 });
