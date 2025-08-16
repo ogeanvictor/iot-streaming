@@ -1,5 +1,6 @@
 import { DataPoint } from '../schemas/dataPoint.schema';
 import { DataPointCreateDto } from '../dtos/dataPoint-create.dto';
+import { DataPointAverage } from '../dtos/dataPoint-average.dto';
 
 export abstract class DataPointRepositoryInterface {
   abstract create(body: DataPointCreateDto): Promise<DataPoint>;
@@ -10,4 +11,5 @@ export abstract class DataPointRepositoryInterface {
     to: string,
     deviceId: string,
   ): Promise<DataPoint[]>;
+  abstract findAverageByDevice(deviceId: string): Promise<DataPointAverage[]>;
 }

@@ -6,6 +6,7 @@ import { DataPoint } from './schemas/dataPoint.schema';
 import { DataPointRepositoryInterface } from './interfaces/dataPoint.repository.interface';
 
 import { DataPointCreateDto } from './dtos/dataPoint-create.dto';
+import { DataPointAverage } from './dtos/dataPoint-average.dto';
 
 @Injectable()
 export class DataPointRepository implements DataPointRepositoryInterface {
@@ -66,6 +67,31 @@ export class DataPointRepository implements DataPointRepositoryInterface {
         $match: {
           device: new mongoose.Types.ObjectId(deviceId),
           createdAt: { $gte: new Date(from), $lte: new Date(to) },
+        },
+      },
+    ]);
+  }
+
+  async findAverageByDevice(deviceId: string): Promise<DataPointAverage[]> {
+    return await this.dataPointModel.aggregate([
+      {
+        $match: {
+          device: new mongoose.Types.ObjectId(deviceId),
+        },
+      },
+      {
+        $group: {
+          _id: '$device',
+          average: { $avg: '$value' },
+          min: { $min: '$value' },
+          max: { $max: '$value' },
+        },
+      },
+      {
+        $project: {
+          average: 1,
+          min: 1,
+          max: 1,
         },
       },
     ]);

@@ -4,6 +4,7 @@ import { DataPoint } from './schemas/dataPoint.schema';
 import { DataPointService } from './dataPoint.service';
 
 import { DataPointCreateDto } from './dtos/dataPoint-create.dto';
+import { DataPointAverage } from './dtos/dataPoint-average.dto';
 
 @Controller('dataPoint')
 export class DataPointController {
@@ -31,5 +32,12 @@ export class DataPointController {
     @Param('id') deviceId: string,
   ): Promise<DataPoint[]> {
     return await this.service.findByPeriodAndDevice(from, to, deviceId);
+  }
+
+  @Get('average-device/:id')
+  async findAverageByDevice(
+    @Param('id') deviceId: string,
+  ): Promise<DataPointAverage[]> {
+    return await this.service.findAverageByDevice(deviceId);
   }
 }
