@@ -5,6 +5,7 @@ import { DataPointRepository } from './dataPoint.repository';
 
 import { DataPointCreateDto } from './dtos/dataPoint-create.dto';
 import { DataPointAverage } from './dtos/dataPoint-average.dto';
+import { DataPointTopDevice } from './dtos/dataPoint-top-device.dto';
 
 @Injectable()
 export class DataPointService {
@@ -50,6 +51,17 @@ export class DataPointService {
   async findAverageByDevice(deviceId: string): Promise<DataPointAverage[]> {
     try {
       return await this.repository.findAverageByDevice(deviceId);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async findTopDevices(
+    from?: string,
+    to?: string,
+  ): Promise<DataPointTopDevice[]> {
+    try {
+      return await this.repository.findTopDevices(from, to);
     } catch (error: any) {
       throw error;
     }

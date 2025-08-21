@@ -5,6 +5,7 @@ import { DataPointService } from './dataPoint.service';
 
 import { DataPointCreateDto } from './dtos/dataPoint-create.dto';
 import { DataPointAverage } from './dtos/dataPoint-average.dto';
+import { DataPointTopDevice } from './dtos/dataPoint-top-device.dto';
 
 @Controller('dataPoint')
 export class DataPointController {
@@ -39,5 +40,13 @@ export class DataPointController {
     @Param('id') deviceId: string,
   ): Promise<DataPointAverage[]> {
     return await this.service.findAverageByDevice(deviceId);
+  }
+
+  @Get('top-devices')
+  async findTopDevices(
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ): Promise<DataPointTopDevice[]> {
+    return await this.service.findTopDevices(from, to);
   }
 }

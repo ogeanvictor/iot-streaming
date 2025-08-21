@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, PipelineStage } from 'mongoose';
 
 import { DataPoint } from './schemas/dataPoint.schema';
 import { DataPointRepositoryInterface } from './interfaces/dataPoint.repository.interface';
 
 import { DataPointCreateDto } from './dtos/dataPoint-create.dto';
 import { DataPointAverage } from './dtos/dataPoint-average.dto';
+import { DataPointTopDevice } from './dtos/dataPoint-top-device.dto';
 
 @Injectable()
 export class DataPointRepository implements DataPointRepositoryInterface {
@@ -95,5 +96,53 @@ export class DataPointRepository implements DataPointRepositoryInterface {
         },
       },
     ]);
+  }
+
+  async findTopDevices(
+    from?: string,
+    to?: string,
+  ): Promise<DataPointTopDevice[]> {
+    const pipeline: PipelineStage[] = [];
+
+    if (from || to) {
+      const createdAt: Record<string, Date> = {};
+      if (from) createdAt.$gte = new Date(from);
+      if (to) createdAt.$lte = new Date(to);
+
+      pipeline.push({ $match: { createdAt } });
+    }
+
+    pipeline.push(
+      {
+        $group: {
+          _id: '$device',
+          avg: { $avg: '$value' },
+          max: { $max: '$value' },
+          min: { $min: '$value' },
+          total: { $sum: 1 },
+        },
+      },
+      { $sort: { total: -1 } },
+      {
+        $lookup: {
+          from: 'devices',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'device',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: { $arrayElemAt: ['$device.name', 0] },
+          avg: 1,
+          min: 1,
+          max: 1,
+          total: 1,
+        },
+      },
+    );
+
+    return this.dataPointModel.aggregate(pipeline);
   }
 }
