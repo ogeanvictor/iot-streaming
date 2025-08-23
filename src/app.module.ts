@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceModule } from './modules/device/device.module';
 import { DataPointModule } from './modules/dataPoint/dataPoint.module';
 import { ScheduleDataPointModule } from './modules/schedule/schedule.module';
+import { RedisModule } from './modules/redis/redis.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ScheduleDataPointModule } from './modules/schedule/schedule.module';
     DeviceModule,
     DataPointModule,
     ScheduleDataPointModule,
+    RedisModule,
   ],
   controllers: [],
   providers: [],
