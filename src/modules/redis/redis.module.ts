@@ -1,7 +1,6 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { redisStore } from 'cache-manager-redis-store';
-import { env } from 'process';
+import KeyvRedis from '@keyv/redis';
 
 import { RedisService } from './redis.service';
 
@@ -10,10 +9,11 @@ import { RedisService } from './redis.service';
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: () => ({
-        store: redisStore,
-        host: env.REDIS_HOST,
-        port: env.REDIS_PORT,
-        ttl: 60,
+        stores: [
+          new KeyvRedis(
+            `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+          ),
+        ],
       }),
     }),
   ],
