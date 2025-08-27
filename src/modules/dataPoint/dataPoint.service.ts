@@ -48,7 +48,20 @@ export class DataPointService {
 
   async findLastsByDevices(): Promise<DataPoint[]> {
     try {
-      return await this.repository.findLastsByDevices();
+      const cacheKey: string = 'dataPoints-findLasts';
+      const cachedDataPoints =
+        await this.redisService.get<DataPoint[]>(cacheKey);
+
+      if (cachedDataPoints) {
+        this.logger.log('Returning cached findLastsByDevices dataPoints data');
+        return cachedDataPoints;
+      }
+
+      const dataPoints: DataPoint[] =
+        await this.repository.findLastsByDevices();
+      await this.redisService.set(cacheKey, dataPoints);
+
+      return dataPoints;
     } catch (error: any) {
       throw error;
     }
@@ -60,7 +73,22 @@ export class DataPointService {
     deviceId: string,
   ): Promise<DataPoint[]> {
     try {
-      return await this.repository.findByPeriodAndDevice(from, to, deviceId);
+      const cacheKey: string = `dataPoints-period-${from}/${to}-device-${deviceId}`;
+      const cachedDataPoints =
+        await this.redisService.get<DataPoint[]>(cacheKey);
+
+      if (cachedDataPoints) {
+        this.logger.log(
+          'Returning cached findByPeriodAndDevice dataPoints data',
+        );
+        return cachedDataPoints;
+      }
+
+      const dataPoints: DataPoint[] =
+        await this.repository.findByPeriodAndDevice(from, to, deviceId);
+      await this.redisService.set(cacheKey, dataPoints);
+
+      return dataPoints;
     } catch (error: any) {
       throw error;
     }
@@ -68,7 +96,20 @@ export class DataPointService {
 
   async findAverageByDevice(deviceId: string): Promise<DataPointAverage[]> {
     try {
-      return await this.repository.findAverageByDevice(deviceId);
+      const cacheKey: string = `dataPoints-average-device-${deviceId}`;
+      const cachedDataPoints =
+        await this.redisService.get<DataPointAverage[]>(cacheKey);
+
+      if (cachedDataPoints) {
+        this.logger.log('Returning cached findAverageByDevice dataPoints data');
+        return cachedDataPoints;
+      }
+
+      const dataPoints: DataPointAverage[] =
+        await this.repository.findAverageByDevice(deviceId);
+      await this.redisService.set(cacheKey, dataPoints);
+
+      return dataPoints;
     } catch (error: any) {
       throw error;
     }
@@ -79,7 +120,20 @@ export class DataPointService {
     to?: string,
   ): Promise<DataPointTopDevice[]> {
     try {
-      return await this.repository.findTopDevices(from, to);
+      const cacheKey: string = `dataPoints-topDevice-${from}/${to}`;
+      const cachedDataPoints =
+        await this.redisService.get<DataPointTopDevice[]>(cacheKey);
+
+      if (cachedDataPoints) {
+        this.logger.log('Returning cached findTopDevices dataPoints data');
+        return cachedDataPoints;
+      }
+
+      const dataPoints: DataPointTopDevice[] =
+        await this.repository.findTopDevices(from, to);
+      await this.redisService.set(cacheKey, dataPoints);
+
+      return dataPoints;
     } catch (error: any) {
       throw error;
     }
