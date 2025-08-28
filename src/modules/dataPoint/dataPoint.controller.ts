@@ -18,7 +18,7 @@ export class DataPointController {
   constructor(private service: DataPointService) {}
 
   @ApiCreatedResponse({
-    description: 'Device created successfully.',
+    description: 'DataPoint created successfully.',
     type: DataPoint,
   })
   @ApiBadRequestResponse({ description: 'Invalid input data.' })
@@ -28,7 +28,7 @@ export class DataPointController {
   }
 
   @ApiCreatedResponse({
-    description: 'Device findAll successfully.',
+    description: 'DataPoint findAll successfully.',
     type: [DataPoint],
   })
   @ApiBadRequestResponse({ description: 'Error.' })
@@ -39,7 +39,7 @@ export class DataPointController {
   }
 
   @ApiCreatedResponse({
-    description: 'Device findLatestsByDevices successfully.',
+    description: 'DataPoint findLatestsByDevices successfully.',
     type: [DataPoint],
   })
   @ApiBadRequestResponse({ description: 'Error.' })
@@ -49,7 +49,7 @@ export class DataPointController {
   }
 
   @ApiCreatedResponse({
-    description: 'Device findByPeriodAndDevice successfully.',
+    description: 'DataPoint findByPeriodAndDevice successfully.',
     type: [DataPoint],
   })
   @ApiBadRequestResponse({ description: 'Error.' })
@@ -66,7 +66,7 @@ export class DataPointController {
   }
 
   @ApiCreatedResponse({
-    description: 'Device findAverageByDevice successfully.',
+    description: 'DataPoint findAverageByDevice successfully.',
     type: [DataPointAverage],
   })
   @ApiBadRequestResponse({ description: 'Error.' })
@@ -79,7 +79,7 @@ export class DataPointController {
   }
 
   @ApiCreatedResponse({
-    description: 'Device findTopDevices successfully.',
+    description: 'DataPoint findTopDevices successfully.',
     type: [DataPointTopDevice],
   })
   @ApiBadRequestResponse({ description: 'Error.' })
