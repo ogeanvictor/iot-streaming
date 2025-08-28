@@ -32,7 +32,6 @@ export class DataPointController {
     type: [DataPoint],
   })
   @ApiBadRequestResponse({ description: 'Error.' })
-  @Post()
   @Get()
   async find(): Promise<DataPoint[]> {
     return await this.service.find();
@@ -85,6 +84,7 @@ export class DataPointController {
   @ApiBadRequestResponse({ description: 'Error.' })
   @ApiQuery({ name: 'from', example: '2025-08-12' })
   @ApiQuery({ name: 'to', example: '2025-08-13' })
+  @Get('top-devices')
   async findTopDevices(
     @Query('from') from?: string,
     @Query('to') to?: string,
