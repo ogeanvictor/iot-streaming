@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { now } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Device } from 'src/modules/device/schemas/device.schema';
+import { Device } from '../../device/schemas/device.schema';
 import { DataPointEnum } from './dataPoint-type.enum';
 
 @Schema()
