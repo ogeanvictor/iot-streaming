@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, PipelineStage } from 'mongoose';
 
 import { DataPoint } from './schemas/dataPoint.schema';
+import { Device } from '../device/schemas/device.schema';
 import { DataPointRepositoryInterface } from './interfaces/dataPoint.repository.interface';
 
 import { DataPointCreateDto } from './dtos/dataPoint-create.dto';
@@ -13,6 +14,7 @@ import { DataPointTopDevice } from './dtos/dataPoint-top-device.dto';
 export class DataPointRepository implements DataPointRepositoryInterface {
   constructor(
     @InjectModel(DataPoint.name) private dataPointModel: Model<DataPoint>,
+    @InjectModel(Device.name) private deviceModel: Model<Device>,
   ) {}
 
   async create(body: DataPointCreateDto): Promise<DataPoint> {
@@ -63,6 +65,14 @@ export class DataPointRepository implements DataPointRepositoryInterface {
     to: string,
     deviceId: string,
   ): Promise<DataPoint[]> {
+    const device: Device | null = await this.deviceModel.findOne({
+      id: deviceId,
+    });
+
+    if (!device) {
+      throw new NotFoundException('Device not found');
+    }
+
     return await this.dataPointModel.aggregate([
       {
         $match: {
@@ -74,6 +84,14 @@ export class DataPointRepository implements DataPointRepositoryInterface {
   }
 
   async findAverageByDevice(deviceId: string): Promise<DataPointAverage[]> {
+    const device: Device | null = await this.deviceModel.findOne({
+      id: deviceId,
+    });
+
+    if (!device) {
+      throw new NotFoundException('Device not found');
+    }
+
     return await this.dataPointModel.aggregate([
       {
         $match: {
