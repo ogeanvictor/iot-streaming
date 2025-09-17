@@ -3,8 +3,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+import { otelSDK } from './infra/monitoring/otel';
 
 async function bootstrap() {
+  otelSDK.start();
   const app = await NestFactory.create(AppModule);
 
   app.enableCors();
